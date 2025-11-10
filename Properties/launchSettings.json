@@ -1,0 +1,8 @@
+{
+    "profiles": {
+        "SimpleChatbot": {
+            "commandName": "Project",
+            "dotnetRunMessages": true
+        }
+    }
+}
