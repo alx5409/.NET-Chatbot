@@ -1,16 +1,16 @@
 ﻿SimpleChatbot/
 │
-├── Chatbot/                # Lógica principal del chatbot
+├── Chatbot/                # Main chatbot logic
 │   ├── Chatbot.cs
 │   └── Responses.cs
 │
-├── Program.cs              # Punto de entrada de la aplicación
+├── Program.cs              # Application entry point
 │
-├── Properties/             # Archivos de configuración del proyecto
+├── Properties/             # Project configuration files
 │   └── launchSettings.json
 │
-├── README.md               # Documentación del proyecto
+├── README.md               # Project documentation
 │
-├── folderStructure.txt     # Estructura de carpetas
+├── folderStructure.txt     # Folder structure
 │
-└── Chatbot.csproj    # Archivo de proyecto de .NET
+└── Chatbot.csproj          # .NET project file
