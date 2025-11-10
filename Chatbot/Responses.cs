@@ -4,21 +4,23 @@ namespace Chatbot
 {
     public static class Responses
     {
+        private static readonly Dictionary<string, string> predefinedResponses = new Dictionary<string, string>
+        {
+            { "hello", "Hello! How can I assist you today?" },
+            { "hi", "Hello! How can I assist you today?" },
+            { "help", "Sure! What do you need help with?" }
+        };
         public static string GetResponse(string userInput)
         {
             userInput = userInput.ToLower();
-            if (userInput.Contains("hello") || userInput.Contains("hi"))
+            foreach (var pair in predefinedResponses)
             {
-                return "Hello! How can I assist you today?";
+                if (userInput.Contains(pair.Key))
+                {
+                    return pair.Value;
+                }
             }
-            else if (userInput.Contains("help"))
-            {
-                return "Sure! What do you need help with?";
-            }
-            else
-            {
-                return "I'm not sure how to respond to that. Can you please clarify?";
-            }
+            return "I'm not sure how to respond to that. Can you please clarify?";
         }
     }
 }
