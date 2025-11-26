@@ -1,35 +1,51 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 
 namespace Chatbot
 {
     public static class Responses
     {
         // Predefined responses for specific keywords using a dictionary or hash map
-        private static readonly Dictionary<string, string> predefinedResponses = new Dictionary<string, string>
+        private static readonly Dictionary<string, string> predefinedResponses = new Dictionary<string, string>();
+            static Responses()
         {
-            { "hello", "Hello! How can I assist you today?" },
-            { "hi", "Hello! How can I assist you today?" },
-            { "help", "Sure! What do you need help with?" },
-            { "how are you", "I'm just a bot, but I'm doing great! How are you?" },
-            { "who are you", "I'm a simple chatbot created to assist you." },
-            { "good morning", "Good morning! How can I help you?" },
-            { "good afternoon", "Good afternoon! What can I do for you?" },
-            { "bye", "Goodbye! Have a great day!" },
-            { "goodbye", "Goodbye! Have a great day!" },
-            { "see you", "See you next time!" },
-            { "what can you do", "I can answer simple questions and have basic conversations." },
-            { "date", $"Today's date is {DateTime.Now.ToShortDateString()}." },
-            { "time", $"The current time is {DateTime.Now.ToShortTimeString()}." }
-        };
+            string filePath = "Chatbot/predefinedResponses.txt";
+            if (File.Exists(filePath))
+            {
+                foreach(var line in File.ReadAllLines(filePath))
+                {
+                    if (string.IsNullOrWhiteSpace(line)|| !line.Contains("=")) continue;
+                    var parts = line.Split(new[] {'='}, 2);
+                    var keyword = parts[0].Trim().ToLower();
+                    var response = parts[1].Trim();
+                    predefinedResponses[keyword] = response;
+                }
+            }
+        }
+
         public static string GetResponse(string userInput)
         {
-            userInput = userInput.ToLower();
+            userInput = userInput.ToLower().Trim();
+            if (userInput == "/help")
+            {
+                var actions = predefinedResponses.Keys
+                    .Where(k => !k.StartsWith("/"))
+                    .OrderBy(k => k)
+                    .Select(k => $"- {k}")
+                    .ToList();
+                return "This is the list of actions I can do:\n " + string.Join("\n", actions);
+            }
             foreach (var pair in predefinedResponses)
             {
                 if (userInput.Contains(pair.Key))
                 {
-                    return pair.Value;
+                    var response = pair.Value;
+                    // Replace placeholders
+                    response = response.Replace("{date}", DateTime.Now.ToString("yyyy-MM-dd"));
+                    response = response.Replace("{time}", DateTime.Now.ToString("HH:mm:ss"));
+                    return response;
                 }
             }
             return "I'm not sure how to respond to that. Can you please clarify?";
